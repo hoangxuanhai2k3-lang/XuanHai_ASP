@@ -1,0 +1,23 @@
+﻿@model CMS.Data.Entities.Post
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary">@Model.Title</h2>
+
+    <p>
+        <span class="badge bg-info text-dark">@Model.Category.Name</span>
+    </p>
+
+    <img src="@Model.ImageUrl" class="img-fluid mb-3" alt="Thumbnail">
+
+    <div class="post-content">
+        @Html.Raw(Model.Content)
+    </div>
+
+    <p class="text-muted">
+        Ngày đăng: @Model.CreatedDate.ToString("dd/MM/yyyy")
+    </p>
+</div>
