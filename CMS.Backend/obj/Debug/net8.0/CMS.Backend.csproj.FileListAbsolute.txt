@@ -148,3 +148,8 @@ D:\HaiCMS_Solution\CMS.Backend\obj\Debug\net8.0\refint\CMS.Backend.dll
 D:\HaiCMS_Solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.pdb
 D:\HaiCMS_Solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.genruntimeconfig.cache
 D:\HaiCMS_Solution\CMS.Backend\obj\Debug\net8.0\ref\CMS.Backend.dll
+D:\HaiCMS_Solution\CMS.Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\HaiCMS_Solution\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\HaiCMS_Solution\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\HaiCMS_Solution\CMS.Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\HaiCMS_Solution\CMS.Backend\obj\Debug\net8.0\CMS.Backend.MvcApplicationPartsAssemblyInfo.cs

@@ -44,7 +44,8 @@ namespace HaiCMS.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
 
-                return RedirectToAction("Index", "Home");
+                // Đăng nhập thành công -> chuyển tới Quản lý bài viết
+                return RedirectToAction("Index", "Post");
             }
 
             ViewBag.Error = "Tên đăng nhập hoặc mật khẩu không đúng!";
@@ -53,7 +54,9 @@ namespace HaiCMS.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Login");
         }
 

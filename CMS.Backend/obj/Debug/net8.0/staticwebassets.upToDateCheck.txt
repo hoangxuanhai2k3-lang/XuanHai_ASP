@@ -1,5 +1,8 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\posts\ai-fashion.jpg
+wwwroot\images\posts\chon-size.jpg
+wwwroot\images\posts\cong-so.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

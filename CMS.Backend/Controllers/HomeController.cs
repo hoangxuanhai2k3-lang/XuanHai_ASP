@@ -11,9 +11,11 @@ using Microsoft.EntityFrameworkCore; // 🚨 BẮT BUỘC có dòng này để c
 using CMS.Data; // Thư mục chứa file ApplicationDbContext của bạn
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Backend.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
