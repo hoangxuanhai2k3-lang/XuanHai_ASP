@@ -19,6 +19,23 @@
             <nav class="col-md-3 col-lg-2 sidebar p-0">
                 <div class="p-3 text-center border-bottom border-secondary">
                     <h4 class="text-white">ThaiCMS Admin</h4>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <div class="mt-2 small text-white">
+                            Chào, <strong>@User.FindFirst("FullName")?.Value</strong>
+                            <br />
+                            <span class="text-warning">
+                                @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
+                            </span>
+                        </div>
+
+                        <a class="btn btn-outline-danger btn-sm mt-2"
+                           asp-controller="Account"
+                           asp-action="Logout">
+                            Đăng xuất
+                        </a>
+                    }
                 </div>
                 <div class="mt-3">
                     <a asp-controller="Home" asp-action="Index">
