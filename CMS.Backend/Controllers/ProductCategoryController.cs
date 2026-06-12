@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using CMS.Data;
+using CMS.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CMS.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ProductCategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,6 +20,79 @@ namespace CMS.Backend.Controllers
         {
             var categories = _context.CategoriesProducts.ToList();
             return View(categories);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(CategoryProduct model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.CategoriesProducts.Add(model);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var category = _context.CategoriesProducts.Find(id);
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(CategoryProduct model)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.CategoriesProducts.Update(model);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var category = _context.CategoriesProducts.Find(id);
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var category = _context.CategoriesProducts.Find(id);
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var category = _context.CategoriesProducts.Find(id);
+
+            if (category != null)
+            {
+                _context.CategoriesProducts.Remove(category);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

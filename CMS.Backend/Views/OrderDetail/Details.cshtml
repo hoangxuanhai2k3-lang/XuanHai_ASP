@@ -1,0 +1,37 @@
+﻿@model CMS.Data.Entities.OrderDetail
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    Layout = "_LayoutAdmin";
+}
+
+<h2>CHI TIẾT ĐƠN HÀNG</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <td>@Model.Id</td>
+    </tr>
+    <tr>
+        <th>Mã đơn</th>
+        <td>@Model.OrderId</td>
+    </tr>
+    <tr>
+        <th>Sản phẩm</th>
+        <td>@Model.Product?.Name</td>
+    </tr>
+    <tr>
+        <th>Số lượng</th>
+        <td>@Model.Quantity</td>
+    </tr>
+    <tr>
+        <th>Đơn giá</th>
+        <td>@Model.UnitPrice.ToString("N0") đ</td>
+    </tr>
+    <tr>
+        <th>Thành tiền</th>
+        <td>@((Model.Quantity * Model.UnitPrice).ToString("N0")) đ</td>
+    </tr>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Quay lại</a>

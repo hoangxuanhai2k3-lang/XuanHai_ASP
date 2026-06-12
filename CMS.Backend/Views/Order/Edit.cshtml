@@ -1,0 +1,35 @@
+﻿@model CMS.Data.Entities.Order
+
+@{
+    ViewData["Title"] = "Sửa đơn hàng";
+    Layout = "_LayoutAdmin";
+}
+
+<h2>SỬA ĐƠN HÀNG</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="OrderDate" />
+
+    <div class="mb-3">
+        <label>Khách hàng</label>
+        <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+    </div>
+
+    <div class="mb-3">
+        <label>Trạng thái</label>
+        <select asp-for="Status" class="form-control">
+            <option value="0">Chờ duyệt</option>
+            <option value="1">Đang giao</option>
+            <option value="2">Đã xong</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Ghi chú</label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-warning">Cập nhật</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>

@@ -1,0 +1,43 @@
+﻿@model CMS.Data.Entities.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+    Layout = "_LayoutAdmin";
+}
+
+<h2>THÊM SẢN PHẨM</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label>Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Mô tả</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Giá</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tồn kho</label>
+        <input asp-for="StockQuantity" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Link ảnh</label>
+        <input type="file" name="uploadImage" class="form-control" accept="image/*" />
+    </div>
+
+    <div class="mb-3">
+        <label>Danh mục</label>
+        <select asp-for="CategoryProductId" asp-items="ViewBag.CategoryProductId" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>

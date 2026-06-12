@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Data;
+﻿using CMS.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers
 {
@@ -74,6 +75,40 @@ namespace CMS.Backend.Controllers
             }
 
             return Ok(product);
+        }
+        [HttpGet("search")]
+        public IActionResult Search([FromQuery] string keyword)
+        {
+            var query = _context.Products
+                .Include(p => p.CategoryProduct)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.Trim().ToLower();
+
+                query = query.Where(p =>
+                    p.Name.ToLower().Contains(keyword) ||
+                    (p.Description != null && p.Description.ToLower().Contains(keyword)) ||
+                    (p.CategoryProduct != null && p.CategoryProduct.Name.ToLower().Contains(keyword))
+                );
+            }
+
+            var products = query
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.Price,
+                    p.ImageUrl,
+                    p.StockQuantity,
+                    p.CategoryProductId,
+                    CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
+                })
+                .ToList();
+
+            return Ok(products);
         }
     }
 }
