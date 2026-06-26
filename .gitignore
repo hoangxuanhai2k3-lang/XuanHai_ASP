@@ -1,6 +1,70 @@
-.vs/ 
-bin/ 
-obj/ 
-node_modules/ 
-*.user 
-*.suo 
+# =========================
+# Visual Studio / .NET
+# =========================
+.vs/
+**/.vs/
+
+bin/
+obj/
+**/bin/
+**/obj/
+
+Debug/
+Release/
+x64/
+x86/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# =========================
+# React / Node.js
+# =========================
+node_modules/
+**/node_modules/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+build/
+dist/
+coverage/
+
+# =========================
+# Environment and secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+appsettings.Development.json
+secrets.json
+
+# Không đưa mật khẩu hoặc khóa bí mật lên Git
+*.pfx
+*.p12
+*.key
+
+# =========================
+# Visual Studio Code
+# =========================
+.vscode/
+
+# =========================
+# Operating system
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.temp
+*.log
+*.cache

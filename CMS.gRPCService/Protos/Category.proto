@@ -1,0 +1,21 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CMS.gRPCService";
+
+package category;
+
+service CategoryService {
+  rpc GetCategories (Empty) returns (CategoryList);
+}
+
+message Empty {
+}
+
+message CategoryModel {
+  int32 id = 1;
+  string name = 2;
+}
+
+message CategoryList {
+  repeated CategoryModel categories = 1;
+}

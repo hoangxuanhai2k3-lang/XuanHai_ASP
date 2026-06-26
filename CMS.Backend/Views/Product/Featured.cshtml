@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CMS.Data.Entities.Product>
+
+@{
+    ViewData["Title"] = "Sản phẩm nổi bật";
+    Layout = "_LayoutAdmin";
+}
+
+<h1>SẢN PHẨM NỔI BẬT</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Danh mục</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+
+                <td>
+                    <img src="@item.ImageUrl" style="width:80px;height:80px;object-fit:cover;" />
+                </td>
+
+                <td>@item.Name</td>
+
+                <td>@item.Price.ToString("N0") đ</td>
+
+                <td>@item.CategoryProduct?.Name</td>
+
+                <td>
+                    @if (item.IsFeatured)
+                    {
+                        <span class="badge bg-success">Đang nổi bật</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Thường</span>
+                    }
+                </td>
+
+                <td>
+                    @if (item.IsFeatured)
+                    {
+                        <a asp-action="ToggleFeatured" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                            Bỏ nổi bật
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="ToggleFeatured" asp-route-id="@item.Id" class="btn btn-success btn-sm">
+                            Đặt nổi bật
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
