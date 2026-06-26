@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ProductCategoryController : Controller
     {
         private readonly ApplicationDbContext _context;

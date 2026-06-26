@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { PageHeader, PageFooter } from "./BlogList";
+
 import "../App.css";
 
 const data = {
@@ -37,7 +37,7 @@ function PolicyPage({ type }) {
 
     return (
         <>
-            <PageHeader />
+      
 
             <div className="page-container policy-page">
                 <div className="breadcrumb">Trang chủ / Chính sách / {policy.title}</div>
@@ -51,8 +51,6 @@ function PolicyPage({ type }) {
                     </section>
                 ))}
             </div>
-
-            <PageFooter />
         </>
     );
 }

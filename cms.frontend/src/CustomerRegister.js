@@ -12,6 +12,7 @@ function CustomerRegister() {
         address: "",
     });
 
+
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };

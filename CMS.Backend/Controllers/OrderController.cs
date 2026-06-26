@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;

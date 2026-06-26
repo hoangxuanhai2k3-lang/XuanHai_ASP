@@ -1,5 +1,5 @@
 ﻿/* Sinh viên: Hoàng Xuân Hải
-* MSSV: 2123110511
+* MSSV: 2123110479
 * Lớp: CCQ2311M
 * Ngày sửa: 30/05/2026
 * Mô tả: Sử dụng kỹ thuật .Include() để nạp kèm dữ liệu danh mục (Category) tránh lỗi Null ở trang Index và Details

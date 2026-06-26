@@ -19,14 +19,18 @@ namespace CMS.Backend.Controllers
         public IActionResult GetAll()
         {
             var products = _context.Products
+                .Include(p => p.CategoryProduct)
                 .Select(p => new
                 {
                     p.Id,
                     p.Name,
+                    p.Description,
                     p.Price,
                     p.ImageUrl,
                     p.StockQuantity,
-                    p.CategoryProductId
+                    p.CategoryProductId,
+                    p.IsFeatured,
+                    CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
                 })
                 .ToList();
 
@@ -37,15 +41,19 @@ namespace CMS.Backend.Controllers
         public IActionResult GetByCategory(int categoryProductId)
         {
             var products = _context.Products
+                .Include(p => p.CategoryProduct)
                 .Where(p => p.CategoryProductId == categoryProductId)
                 .Select(p => new
                 {
                     p.Id,
                     p.Name,
+                    p.Description,
                     p.Price,
                     p.ImageUrl,
                     p.StockQuantity,
-                    p.CategoryProductId
+                    p.CategoryProductId,
+                    p.IsFeatured,
+                    CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
                 })
                 .ToList();
 
@@ -56,6 +64,7 @@ namespace CMS.Backend.Controllers
         public IActionResult GetDetail(int id)
         {
             var product = _context.Products
+                .Include(p => p.CategoryProduct)
                 .Where(p => p.Id == id)
                 .Select(p => new
                 {
@@ -65,7 +74,9 @@ namespace CMS.Backend.Controllers
                     p.Price,
                     p.StockQuantity,
                     p.ImageUrl,
-                    p.CategoryProductId
+                    p.CategoryProductId,
+                    p.IsFeatured,
+                    CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
                 })
                 .FirstOrDefault();
 
@@ -76,8 +87,9 @@ namespace CMS.Backend.Controllers
 
             return Ok(product);
         }
+
         [HttpGet("search")]
-        public IActionResult Search([FromQuery] string keyword)
+        public IActionResult Search([FromQuery] string? keyword)
         {
             var query = _context.Products
                 .Include(p => p.CategoryProduct)
@@ -104,6 +116,30 @@ namespace CMS.Backend.Controllers
                     p.ImageUrl,
                     p.StockQuantity,
                     p.CategoryProductId,
+                    p.IsFeatured,
+                    CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
+                })
+                .ToList();
+
+            return Ok(products);
+        }
+
+        [HttpGet("featured")]
+        public IActionResult GetFeatured()
+        {
+            var products = _context.Products
+                .Include(p => p.CategoryProduct)
+                .Where(p => p.IsFeatured)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.Price,
+                    p.ImageUrl,
+                    p.StockQuantity,
+                    p.CategoryProductId,
+                    p.IsFeatured,
                     CategoryProductName = p.CategoryProduct != null ? p.CategoryProduct.Name : "Thời trang"
                 })
                 .ToList();

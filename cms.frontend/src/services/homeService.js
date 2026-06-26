@@ -23,7 +23,11 @@ const homeService = {
             params: { keyword: keyword }
         });
         return res.data;
-    }
+    },
+    getFeaturedProducts: async () => {
+        const res = await axios.get(`${API_URL}/Products/featured`);
+        return res.data;
+    },
 };
 
 export default homeService;

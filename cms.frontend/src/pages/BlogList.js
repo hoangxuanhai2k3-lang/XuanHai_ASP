@@ -7,13 +7,23 @@ const API_URL = "https://localhost:7132";
 function BlogList() {
     const [posts, setPosts] = useState([]);
 
+    // --- PHẦN KHAI BÁO PHÂN TRANG ---
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 6;
+
     useEffect(() => {
         homeService.getPosts().then(setPosts);
     }, []);
 
+    // --- LOGIC TÍNH TOÁN PHÂN TRANG ---
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+    const totalPages = Math.ceil(posts.length / postsPerPage);
+
     return (
         <>
-            <PageHeader />
+       
 
             <div className="page-container">
                 <div className="breadcrumb">Trang chủ / Tin tức</div>
@@ -22,7 +32,7 @@ function BlogList() {
                 <p>Cập nhật xu hướng phối đồ, mẹo chọn trang phục và kiến thức thời trang.</p>
 
                 <div className="blog-grid">
-                    {posts.map((post) => (
+                    {currentPosts.map((post) => (
                         <div className="blog-card" key={post.id}>
                             <img src={`${API_URL}${post.imageUrl}`} alt={post.title} />
 
@@ -35,9 +45,38 @@ function BlogList() {
                         </div>
                     ))}
                 </div>
+
+                {/* --- UI HIỂN THỊ NÚT PHÂN TRANG --- */}
+                {totalPages > 1 && (
+                    <div className="pagination" style={{ textAlign: "center", margin: "20px 0" }}>
+                        <button
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                        >
+                            Trước
+                        </button>
+
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                            <button
+                                key={page}
+                                className={currentPage === page ? "active" : ""}
+                                onClick={() => setCurrentPage(page)}
+                                style={{ margin: "0 5px" }}
+                            >
+                                {page}
+                            </button>
+                        ))}
+
+                        <button
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                        >
+                            Sau
+                        </button>
+                    </div>
+                )}
             </div>
 
-            <PageFooter />
         </>
     );
 }

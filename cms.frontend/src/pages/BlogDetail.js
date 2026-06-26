@@ -1,6 +1,6 @@
 ﻿import React, { useEffect, useState } from "react";
 import homeService from "../services/homeService";
-import { PageHeader, PageFooter } from "./BlogList";
+
 import "../App.css";
 
 const API_URL = "https://localhost:7132";
@@ -8,6 +8,7 @@ const API_URL = "https://localhost:7132";
 function BlogDetail() {
     const [posts, setPosts] = useState([]);
     const [comment, setComment] = useState({ name: "", email: "", content: "" });
+    const [approvedComments, setApprovedComments] = useState([]);
 
     const id = Number(window.location.pathname.split("/").pop());
 
@@ -15,28 +16,68 @@ function BlogDetail() {
         homeService.getPosts().then(setPosts);
     }, []);
 
-    const post = posts.find((x) => x.id === id);
-    const related = posts.filter((x) => x.id !== id).slice(0, 3);
+    useEffect(() => {
+        fetch(`${API_URL}/api/PostComments/post/${id}`)
+            .then((res) => res.json())
+            .then((data) => setApprovedComments(data))
+            .catch(() => setApprovedComments([]));
+    }, [id]);
 
-    const sendComment = (e) => {
+    const post = posts.find((x) => Number(x.id) === id);
+    const related = posts.filter((x) => Number(x.id) !== id).slice(0, 3);
+
+    const sendComment = async (e) => {
         e.preventDefault();
-        alert("Bình luận của bạn đã được ghi nhận!");
-        setComment({ name: "", email: "", content: "" });
+
+        try {
+            const response = await fetch(`${API_URL}/api/PostComments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    postId: post.id,
+                    fullName: comment.name,
+                    email: comment.email,
+                    content: comment.content
+                })
+            });
+
+            if (!response.ok) {
+                alert("Gửi bình luận thất bại. Vui lòng kiểm tra Backend.");
+                return;
+            }
+
+            alert("Bình luận đã gửi và chờ Admin duyệt!");
+            setComment({ name: "", email: "", content: "" });
+        } catch {
+            alert("Không kết nối được đến API bình luận.");
+        }
     };
+
+    if (posts.length === 0) {
+        return (
+            <>
+                <div className="page-container">Đang tải bài viết...</div>
+                
+            </>
+        );
+    }
 
     if (!post) {
         return (
             <>
-                <PageHeader />
-                <div className="page-container">Đang tải bài viết...</div>
-                <PageFooter />
+                <div className="page-container">
+                    Không tìm thấy bài viết có ID = {id}
+                </div>
+              
             </>
         );
     }
 
     return (
         <>
-            <PageHeader />
+       
 
             <div className="page-container blog-detail-layout">
                 <main>
@@ -50,7 +91,11 @@ function BlogDetail() {
                         📅 {new Date(post.createdDate).toLocaleDateString("vi-VN")}
                     </p>
 
-                    <img className="post-main-img" src={`${API_URL}${post.imageUrl}`} alt={post.title} />
+                    <img
+                        className="post-main-img"
+                        src={`${API_URL}${post.imageUrl}`}
+                        alt={post.title}
+                    />
 
                     <div
                         className="post-content"
@@ -59,11 +104,11 @@ function BlogDetail() {
                                 post.content +
                                 `
                                 <h2>Gợi ý phối đồ từ HaiCMS Fashion</h2>
-                                <p>Khi lựa chọn trang phục, bạn nên ưu tiên chất liệu, phom dáng và màu sắc phù hợp với hoàn cảnh sử dụng. Với môi trường công sở, các thiết kế thanh lịch, tối giản và dễ phối sẽ giúp người mặc tự tin hơn.</p>
-                                <p>Đối với các buổi tiệc hoặc sự kiện, bạn có thể chọn các mẫu đầm có điểm nhấn nhẹ ở phần eo, cổ áo hoặc chất liệu vải để tạo cảm giác sang trọng nhưng vẫn tinh tế.</p>
+                                <p>Khi lựa chọn trang phục, bạn nên ưu tiên chất liệu, phom dáng và màu sắc phù hợp với hoàn cảnh sử dụng.</p>
+                                <p>Đối với các buổi tiệc hoặc sự kiện, bạn có thể chọn các mẫu đầm có điểm nhấn nhẹ để tạo cảm giác sang trọng.</p>
                                 <h2>Kết luận</h2>
-                                <p>Thời trang không chỉ là quần áo mà còn là cách thể hiện phong cách sống. HaiCMS Fashion luôn hướng đến sự thanh lịch, hiện đại và phù hợp với nhu cầu thực tế của khách hàng.</p>
-                                `,
+                                <p>Thời trang không chỉ là quần áo mà còn là cách thể hiện phong cách sống.</p>
+                                `
                         }}
                     />
 
@@ -74,26 +119,50 @@ function BlogDetail() {
                             <input
                                 placeholder="Họ tên"
                                 value={comment.name}
-                                onChange={(e) => setComment({ ...comment, name: e.target.value })}
+                                onChange={(e) =>
+                                    setComment({ ...comment, name: e.target.value })
+                                }
                                 required
                             />
 
                             <input
                                 placeholder="Email"
                                 value={comment.email}
-                                onChange={(e) => setComment({ ...comment, email: e.target.value })}
+                                onChange={(e) =>
+                                    setComment({ ...comment, email: e.target.value })
+                                }
                                 required
                             />
 
                             <textarea
                                 placeholder="Nội dung bình luận"
                                 value={comment.content}
-                                onChange={(e) => setComment({ ...comment, content: e.target.value })}
+                                onChange={(e) =>
+                                    setComment({ ...comment, content: e.target.value })
+                                }
                                 required
                             />
 
-                            <button>Gửi bình luận</button>
+                            <button type="submit">Gửi bình luận</button>
                         </form>
+
+                        <div className="approved-comments">
+                            <h3>Bình luận đã duyệt</h3>
+
+                            {approvedComments.length === 0 ? (
+                                <p>Chưa có bình luận nào.</p>
+                            ) : (
+                                approvedComments.map((item) => (
+                                    <div className="comment-item" key={item.id}>
+                                        <strong>{item.fullName}</strong>
+                                        <p>{item.content}</p>
+                                        <small>
+                                            {new Date(item.createdDate).toLocaleString("vi-VN")}
+                                        </small>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </section>
                 </main>
 
@@ -116,6 +185,7 @@ function BlogDetail() {
                     {related.map((item) => (
                         <div className="blog-card" key={item.id}>
                             <img src={`${API_URL}${item.imageUrl}`} alt={item.title} />
+
                             <div className="blog-content">
                                 <h3>{item.title}</h3>
                                 <a href={`/blog/${item.id}`}>Đọc bài viết →</a>
@@ -125,7 +195,7 @@ function BlogDetail() {
                 </div>
             </div>
 
-            <PageFooter />
+           
         </>
     );
 }

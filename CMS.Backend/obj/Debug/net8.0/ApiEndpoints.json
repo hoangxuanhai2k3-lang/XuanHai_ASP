@@ -42,6 +42,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CMS.Backend.Controllers.ContactsController",
+    "Method": "Create",
+    "RelativePath": "api/Contacts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CMS.Backend.Controllers.ContactRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CMS.Backend.Controllers.OrdersController",
     "Method": "CreateOrder",
     "RelativePath": "api/Orders",
@@ -67,6 +83,38 @@
     "Parameters": [
       {
         "Name": "customerId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.PostCommentsController",
+    "Method": "Create",
+    "RelativePath": "api/PostComments",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CMS.Data.Entities.PostComment",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.PostCommentsController",
+    "Method": "GetApprovedByPost",
+    "RelativePath": "api/PostComments/post/{postId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "postId",
         "Type": "System.Int32",
         "IsRequired": true
       }
@@ -159,6 +207,16 @@
   },
   {
     "ContainingType": "CMS.Backend.Controllers.ProductsController",
+    "Method": "GetFeatured",
+    "RelativePath": "api/Products/featured",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.ProductsController",
     "Method": "Search",
     "RelativePath": "api/Products/search",
     "HttpMethod": "GET",
@@ -171,6 +229,16 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CMS.Backend.Controllers.ProductController",
+    "Method": "GetFeaturedProducts",
+    "RelativePath": "featured",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

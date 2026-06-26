@@ -1,19 +1,44 @@
 ﻿import React, { useState } from "react";
-import { PageHeader, PageFooter } from "./BlogList";
 import "../App.css";
 
 function Contact() {
-    const [form, setForm] = useState({ name: "", email: "", message: "" });
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        message: ""
+    });
 
-    const submit = (e) => {
+    const submit = async (e) => {
         e.preventDefault();
-        alert("Cảm ơn bạn đã liên hệ. HaiCMS Fashion sẽ phản hồi sớm!");
-        setForm({ name: "", email: "", message: "" });
+
+        try {
+            const response = await fetch("https://localhost:7132/api/Contacts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    fullName: form.name,
+                    email: form.email,
+                    message: form.message
+                })
+            });
+
+            if (!response.ok) {
+                alert("Gửi liên hệ thất bại. Vui lòng kiểm tra Backend.");
+                return;
+            }
+
+            alert("Cảm ơn bạn đã liên hệ. HaiCMS Fashion sẽ phản hồi sớm!");
+            setForm({ name: "", email: "", message: "" });
+        } catch {
+            alert("Không kết nối được đến API liên hệ.");
+        }
     };
 
     return (
         <>
-            <PageHeader />
+           
 
             <div className="page-container contact-page">
                 <div className="breadcrumb">Trang chủ / Liên hệ</div>
@@ -51,12 +76,11 @@ function Contact() {
                             required
                         />
 
-                        <button>Gửi liên hệ</button>
+                        <button type="submit">Gửi liên hệ</button>
                     </form>
                 </div>
             </div>
 
-            <PageFooter />
         </>
     );
 }

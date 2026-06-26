@@ -1,0 +1,142 @@
+﻿@model IEnumerable<CMS.Data.Entities.Contact>
+
+@{
+    ViewData["Title"] = "Liên hệ khách hàng";
+    Layout = "_LayoutAdmin";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>LIÊN HỆ KHÁCH HÀNG</h2>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Hiện chưa có liên hệ nào từ khách hàng.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Nội dung</th>
+                <th>Ngày gửi</th>
+                <th>Trạng thái</th>
+                <th style="width: 260px;">Thao tác</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(!item.IsRead ? "table-warning" : "")">
+                    <td>@item.Id</td>
+
+                    <td>@item.FullName</td>
+
+                    <td>
+                        <a href="mailto:@item.Email">
+                            @item.Email
+                        </a>
+                    </td>
+
+                    <td style="max-width: 380px; white-space: normal;">
+                        @item.Message
+                    </td>
+
+                    <td>
+                        @item.CreatedDate.ToString("dd/MM/yyyy HH:mm")
+                    </td>
+
+                    <td>
+                        @if (item.IsRead)
+                        {
+                            <span class="badge bg-success">
+                                Đã đọc
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Chưa đọc
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+                        <div class="d-flex gap-2 flex-wrap">
+                            @if (!item.IsRead)
+                            {
+                                <form asp-controller="Contact"
+                                      asp-action="MarkRead"
+                                      method="post">
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@item.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-info btn-sm text-white">
+                                        Đánh dấu đã đọc
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-controller="Contact"
+                                      asp-action="MarkUnread"
+                                      method="post">
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@item.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-secondary btn-sm">
+                                        Đánh dấu chưa đọc
+                                    </button>
+                                </form>
+                            }
+
+                            <form asp-controller="Contact"
+                                  asp-action="Delete"
+                                  method="post"
+                                  onsubmit="return confirm('Bạn có chắc muốn xóa liên hệ này không?');">
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm">
+                                    Xóa
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

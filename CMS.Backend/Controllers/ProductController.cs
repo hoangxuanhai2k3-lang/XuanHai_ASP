@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -127,6 +127,17 @@ namespace CMS.Backend.Controllers
             return View(product);
         }
 
+        [HttpGet("featured")]
+        public IActionResult GetFeaturedProducts()
+        {
+            // Lấy 5 sản phẩm mới nhất hoặc sản phẩm có lượt mua cao
+            var featured = _context.Products
+                .OrderByDescending(p => p.Id)
+                .Take(5)
+                .ToList();
+            return Ok(featured);
+        }
+
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -140,7 +151,31 @@ namespace CMS.Backend.Controllers
 
             return RedirectToAction("Index");
         }
+        public IActionResult Featured()
+        {
+            var products = _context.Products
+                .Include(p => p.CategoryProduct)
+                .OrderByDescending(p => p.IsFeatured)
+                .ThenByDescending(p => p.Id)
+                .ToList();
 
+            return View(products);
+        }
+
+        public IActionResult ToggleFeatured(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.IsFeatured = !product.IsFeatured;
+            _context.SaveChanges();
+
+            return RedirectToAction("Featured");
+        }
         private string SaveProductImage(IFormFile uploadImage)
         {
             string folder = Path.Combine(

@@ -38,6 +38,11 @@
         <select asp-for="CategoryProductId" asp-items="ViewBag.CategoryProductId" class="form-control"></select>
     </div>
 
+    <div class="mb-3 form-check">
+        <input asp-for="IsFeatured" class="form-check-input" />
+        <label asp-for="IsFeatured" class="form-check-label">Sản phẩm nổi bật</label>
+    </div>
+
     <button type="submit" class="btn btn-success">Lưu</button>
     <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
 </form>
